@@ -9,7 +9,14 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'author_id', 'category_id', 'publisher_id', 'published_year'];
+    protected $fillable = [
+        'title',
+        'author_id',
+        'category_id',
+        'publisher_id',
+        'published_year',
+        'cover_image', // Adicionado para upload de imagens
+    ];
 
     public function author()
     {
@@ -25,12 +32,11 @@ class Book extends Model
     {
         return $this->belongsTo(Publisher::class);
     }
-    
-    public function users()
-{
-    return $this->belongsToMany(User::class, 'borrowings')
-                ->withPivot('borrowed_at', 'returned_at')
-                ->withTimestamps();
-}
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'borrowings')
+                    ->withPivot('id', 'borrowed_at', 'returned_at')
+                    ->withTimestamps();
+    }
 }

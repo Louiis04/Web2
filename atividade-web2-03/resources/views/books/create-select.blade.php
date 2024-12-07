@@ -4,7 +4,7 @@
 <div class="container">
     <h1 class="my-4">Adicionar Livro (Com Select)</h1>
 
-    <form action="{{ route('books.store.select') }}" method="POST">
+    <form action="{{ route('books.store.select') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="title" class="form-label">Título</label>
@@ -61,7 +61,44 @@
             @enderror
         </div>
 
+        <div class="mb-3">
+            <label for="cover_image" class="form-label">Imagem da Capa</label>
+            <input type="file" class="form-control @error('cover_image') is-invalid @enderror" id="cover_image" name="cover_image" accept="image/*" onchange="previewImage(event)">
+            @error('cover_image')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+
+        <!-- Área de pré-visualização da imagem -->
+        <div class="mb-3">
+            <label class="form-label">Pré-visualização:</label>
+            <div>
+                <img id="imagePreview" src="#" alt="Pré-visualização da imagem" style="max-width: 100%; max-height: 300px; display: none;" class="img-fluid">
+            </div>
+        </div>
+
         <button type="submit" class="btn btn-success">Salvar</button>
     </form>
 </div>
+
+<script>
+    function previewImage(event) {
+        const imagePreview = document.getElementById('imagePreview');
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.src = '#';
+            imagePreview.style.display = 'none';
+        }
+    }
+</script>
 @endsection

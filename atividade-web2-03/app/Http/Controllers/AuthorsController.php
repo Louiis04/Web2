@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class AuthorsController extends Controller
@@ -41,8 +42,10 @@ class AuthorsController extends Controller
     // Mostra o formulário para editar uma categoria existente
     public function edit(Author $author)
     {
-        return view('authors.edit', compact('author'));
+        $category = Category::all();
+        return view('authors.edit', compact('author', 'category'));
     }
+    
 
     // Atualiza uma categoria no banco de dados
     public function update(Request $request, Author $author)

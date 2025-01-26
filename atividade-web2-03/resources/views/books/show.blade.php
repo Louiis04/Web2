@@ -35,8 +35,10 @@
 
     <!-- Formulário para Empréstimos -->
     <div class="card mb-4">
+    @can('borrow', App\Models\Book::class)
         <div class="card-header">Registrar Empréstimo</div>
         <div class="card-body">
+
             <form action="{{ route('books.borrow', $book) }}" method="POST">
                 @csrf
                 <div class="mb-3">
@@ -94,6 +96,7 @@
                 </table>
             @endif
         </div>
+        @endcan
     </div>
 
     <a href="{{ route('books.index') }}" class="btn btn-secondary mt-3">

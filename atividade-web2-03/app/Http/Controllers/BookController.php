@@ -54,6 +54,8 @@ class BookController extends Controller
 
     public function update(Request $request, Book $book)
     {
+        $this->authorize('update', Book::class);
+
         $request->validate([
             'title' => 'required|string|max:255',
             'publisher_id' => 'required|exists:publishers,id',
@@ -84,11 +86,28 @@ class BookController extends Controller
 
         return view('books.show', compact('book', 'users'));
     }
-
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::with('author')->paginate(20);
-
-        return view('books.index', compact('books'));
+        $search = $request->input('search');
+        
+        $books = Book::query()
+            ->when($search, function ($query) use ($search) {
+                return $query->where('title', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+        
+        return view('books.index', compact('books', 'search'));
     }
+
+    public function destroy(Book $book)
+{
+    $this->authorize('delete', Book::class);
+    
+    $book->delete();
+    
+    return redirect()->route('books.index')
+        ->with('success', 'Book deleted successfully');
 }
+
+    }
+

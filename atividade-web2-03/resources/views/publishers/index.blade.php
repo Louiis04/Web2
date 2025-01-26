@@ -4,9 +4,21 @@
 <div class="container">
     <h1 class="my-4">Lista de Editoras</h1>
 
+    @can('create', App\Models\Publisher::class)
     <a href="{{ route('publishers.create') }}" class="btn btn-success mb-3">
-        <i class="bi bi-plus"></i> Adicionar Autor
+        <i class="bi bi-plus"></i> Adicionar Editora
     </a>
+@else
+    <button onclick="showUnauthorized()" class="btn btn-success mb-3">
+        <i class="bi bi-plus"></i> Adicionar Editora
+    </button>
+
+    <script>
+        function showUnauthorized() {
+            alert('Acesso não autorizado.');
+        }
+    </script>
+@endcan
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -34,11 +46,14 @@
                         </a>
 
                         <!-- Botão de Editar -->
+                        @can('update', App\Models\Publisher::class)
                         <a href="{{ route('publishers.edit', $publisher) }}" class="btn btn-primary btn-sm">
                             <i class="bi bi-pencil"></i> Editar
                         </a>
+                        @endcan
 
                         <!-- Botão de Excluir -->
+                        @can('delete', App\Models\Publisher::class)
                         <form action="{{ route('publishers.destroy', $publisher) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
@@ -46,6 +61,7 @@
                                 <i class="bi bi-trash"></i> Excluir
                             </button>
                         </form>
+                        @endcan
                     </td>
                 </tr>
             @empty

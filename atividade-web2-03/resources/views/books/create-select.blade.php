@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @can('create', App\Models\Book::class)
     <h1 class="my-4">Adicionar Livro (Com Select)</h1>
 
     <form action="{{ route('books.store.select') }}" method="POST" enctype="multipart/form-data">
@@ -100,5 +101,8 @@
             imagePreview.style.display = 'none';
         }
     }
+
+    
 </script>
+@endcan
 @endsection

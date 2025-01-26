@@ -4,7 +4,7 @@
 <div class="container">
     <h1 class="my-4">Editar Autor</h1>
 
-    <form action="{{ route('authors.update', $category) }}" method="POST">
+    <form action="{{ route('authors.update',$author->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="mb-3">

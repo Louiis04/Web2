@@ -16,6 +16,7 @@ class BorrowingController extends Controller
      */
     public function store(Request $request, Book $book)
     {
+        $this->authorize('borrow', Book::class);
         $request->validate([
             'user_id' => 'required|exists:users,id',
         ]);
